@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Eazyest Gallery IPTC Caption
-Plugin URI: @todo
+Plugin URI: https://github.com/isabelc/Eazyest-Gallery-IPTC-Caption
 Description: Use the IPTC Title as your image captions for Eazyest Gallery images.
 Version: 0.2.2
 Author: Isabel Castillo
