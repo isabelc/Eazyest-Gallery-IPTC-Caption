@@ -3,7 +3,7 @@
 Plugin Name: Eazyest Gallery IPTC Caption
 Plugin URI: http://isabelcastillo.com/free-plugins/eazyest-gallery-iptc-caption
 Description: Use the IPTC Title as your image captions for Eazyest Gallery images.
-Version: 0.2.3-beta-2
+Version: 1.0
 Author: Isabel Castillo
 Author URI: http://isabelcastillo.com
 License: GPL2
@@ -40,8 +40,9 @@ class Eazyest_Gallery_IPTC_Caption {
 	private function __construct() {
 
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
-		add_action('admin_menu', array($this, 'add_plugin_page'));
-		add_action('admin_init', array($this, 'page_init'));
+		add_action( 'admin_menu', array($this, 'add_plugin_page' ) );
+		add_action( 'admin_init', array($this, 'page_init' ) );
+		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
 	}
 	
@@ -64,7 +65,7 @@ class Eazyest_Gallery_IPTC_Caption {
 		$query = "SELECT * FROM $wpdb->posts p where p.post_type = 'attachment' AND (p.post_mime_type LIKE 'image/%')  AND (p.post_status = 'inherit') AND p.post_parent IN (SELECT $wpdb->posts.ID FROM $wpdb->posts  {$where} ) ORDER BY p.post_date DESC";
 		$results =  $wpdb->get_results( $query );
 		
-		if ( $results ) {
+		if( $results ) {
 
 			foreach ( (array) $results as $image ) {
 
@@ -102,7 +103,20 @@ class Eazyest_Gallery_IPTC_Caption {
 		// if they aggreed to disclaimer, then update captions
 		if ( 'on' == $input ) { // @test that it does not run when not checked
 			$this->update_captions();
+
+			$type = 'updated';
+			$message = __( 'Captions for your Eazyest Gallery Images have been updated.', 'eazyest-gallery-iptc-caption' );
+		} else {
+			$type = 'error';
+			$message = __( 'Checkbox must be checked before Captions can be updated.', 'eazyest-gallery-iptc-caption' );
+
 		}
+		add_settings_error(
+			'eg_iptc_update_caption_disclaimer',
+			'',
+			$message,
+			$type
+		);
 		return $input;
     }
 
@@ -193,5 +207,13 @@ class Eazyest_Gallery_IPTC_Caption {
 		__(' Check this to confirm that you understand that you are using this plugin at your own risk, and that Isabel Castillo will not be held liable under any circumstances for any adverse effects caused by this plugin. I have done my best to ensure that this works as described. You understand that this will update all captions so that you may lose dear captions that you have written in the backend.', 'eazyest-gallery-iptc-caption' );
 		echo $html;
 	}
+
+	/**
+	* Displays admin notices
+	*/
+	function admin_notices() {
+		settings_errors( 'eg_iptc_update_caption_disclaimer' );
+	}
+
 }
 $recent_posts_see_all = Eazyest_Gallery_IPTC_Caption::get_instance();
