@@ -5,6 +5,8 @@ This WordPress plugin is an extension for [Eazyest Gallery](http://wordpress.org
 
 What is the IPTC caption? To most of you, this is best known as the picture's "title" or "caption" in Windows. So, this is useful if you've given "titles" to your pictures in Windows, and you want Eazyest Gallery to use that title (as Lazyest Gallery used it).
 
+See more info on the [plugin's page](http://isabelcastillo.com/free-plugins/eazyest-gallery-iptc-caption).
+
 
 Usage
 -----
